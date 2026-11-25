@@ -1,0 +1,53 @@
+@media (hover: hover) {
+	.wv-trivia .paired-options .wv-trivia__option:hover:not(:has(input:checked)) {
+		border-color: var(--wv-bronze);
+	}
+}
+
+@media (width > 46rem) {
+	@container wv-trivia (width > 46rem) {
+		.paired-questions {
+			grid-template-rows: repeat(2, [label] auto [feature] auto [prompt] auto [crop] auto
+				[status] auto [explanation] auto [reveal] auto [community] auto
+				[options] auto auto auto auto [action] auto);
+			row-gap: 0;
+		}
+		.paired-question, .paired-body, .paired-form, .paired-options, .paired-review {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-rows: subgrid;
+		}
+		.paired-question {
+			grid-row: span 13;
+			align-items: start;
+		}
+		.paired-question:nth-child(-n+2) { margin-block-end: clamp(1rem, 3cqi, 1.5rem); }
+		.paired-question > .wv-trivia__eyebrow:first-child { grid-row: label; }
+		.paired-question > .paired-feature { grid-row: feature; }
+		.paired-question > h3 { grid-row: prompt; }
+		.paired-body {
+			grid-row: crop / span 10;
+			align-self: stretch;
+		}
+		.paired-form { grid-row: status / span 9; }
+		.paired-body > .v2-picture:first-child { grid-row: crop; }
+		.paired-form > .wv-trivia__legend, .paired-body > .wv-trivia__feedback { grid-row: status; }
+		.paired-form > .wv-trivia__legend { margin-block-start: 0; }
+		.paired-body > .v2-explanation { grid-row: explanation; }
+		.paired-body > .v2-picture:not(:first-child) { grid-row: reveal; }
+		.paired-body > .v2-community { grid-row: community; }
+		.paired-options, .paired-review { grid-row: options / span 4; }
+		.wv-trivia.v2 .paired-review .wv-trivia__option { align-content: space-between; }
+		.paired-form > .wv-trivia__button, .paired-body > .wv-trivia__hint {
+			grid-row: action;
+			justify-self: start;
+		}
+		.paired-body > :not(.paired-form, .paired-review), .paired-form > :not(.paired-options) {
+			align-self: start;
+		}
+		.wv-trivia .paired-question.v2-connoisseur {
+			border-block-start-width: 1px;
+			box-shadow: inset 0 .16rem #ad8145;
+		}
+	}
+}

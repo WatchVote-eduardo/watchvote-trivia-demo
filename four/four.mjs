@@ -56,7 +56,7 @@ function renderReview(ordered, correct, choice, container, focus) {
 		`${isCorrect ? "Correct! The answer is" : "Not quite. The correct answer is"} ${correctText}.`);
 	if (!isCorrect) result.classList.add("wv-trivia__feedback--incorrect");
 	result.tabIndex = -1;
-	const list = element("ul", "wv-trivia__review");
+	const list = element("ul", "wv-trivia__review paired-review");
 	list.setAttribute("role", "list");
 	for (const option of ordered) {
 		const item = element("li", "wv-trivia__option");
@@ -75,19 +75,22 @@ function renderReview(ordered, correct, choice, container, focus) {
 function buildQuestion(question, number, choice, onAnswer) {
 	const [title, options, correct] = question;
 	const ordered = orderedOptions(title, options);
-	const card = element("section", "wv-trivia__card four-question");
+	const card = element("section", "wv-trivia__card four-question paired-question");
 	const heading = element("h3", "", title);
 	heading.id = `question-${number}`;
 	card.setAttribute("aria-labelledby", heading.id);
-	const content = element("div");
+	const content = element("div", "paired-body");
 	card.append(element("p", "wv-trivia__eyebrow", `Question ${number} of 4`), heading, content);
 	if (isChoice(choice, options)) {
 		renderReview(ordered, correct, choice, content, false);
 		return card;
 	}
-	const form = element("form");
-	const fieldset = element("fieldset");
-	fieldset.append(element("legend", "wv-trivia__legend", "Choose one answer"));
+	const form = element("form", "paired-form");
+	const legend = element("p", "wv-trivia__legend", "Choose one answer");
+	legend.id = `choices-${number}`;
+	const optionsGroup = element("div", "paired-options");
+	optionsGroup.setAttribute("role", "radiogroup");
+	optionsGroup.setAttribute("aria-labelledby", legend.id);
 	for (const option of ordered) {
 		const radio = element("input");
 		radio.type = "radio";
@@ -96,11 +99,11 @@ function buildQuestion(question, number, choice, onAnswer) {
 		radio.value = option.index;
 		const label = element("label", "wv-trivia__option");
 		label.append(radio, ...optionContent(option));
-		fieldset.append(label);
+		optionsGroup.append(label);
 	}
 	const submit = element("button", "wv-trivia__button", "Submit answer");
 	submit.type = "submit";
-	form.append(fieldset, submit);
+	form.append(legend, optionsGroup, submit);
 	form.addEventListener("submit", (event) => {
 		event.preventDefault();
 		const selected = form.querySelector("input:checked");

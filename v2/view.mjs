@@ -41,7 +41,7 @@ function picture(image, revealed) {
 }
 
 function benchHeader(bench) {
-	const header = el("header", "v2-bench");
+	const header = el("header", "v2-bench paired-feature");
 	const image = el("img");
 	image.src = bench.photo;
 	image.width = 80;
@@ -69,7 +69,7 @@ function review(question, choice) {
 	if (question.read_more_url) explanation.append(link("Read more on WatchVote", question.read_more_url, "v2-reading"));
 	const percentages = communityFor(question.votes, choice);
 	const community = el("p", "v2-community", `${percentages[question.correct_index]}% of collectors got this right.`);
-	const list = el("ul", "wv-trivia__review");
+	const list = el("ul", "wv-trivia__review paired-review");
 	list.setAttribute("role", "list");
 	question.options.forEach((text, index) => {
 		const isCorrect = index === question.correct_index;
@@ -99,7 +99,7 @@ function review(question, choice) {
 export function questionCard(question, savedChoice, submit) {
 	const isLocked = Number.isInteger(savedChoice) && Object.hasOwn(question.options, savedChoice);
 	const { slot, level } = question;
-	const card = el("section", `wv-trivia__card v2-question${level === "connoisseur" ? " v2-connoisseur" : ""}`);
+	const card = el("section", `wv-trivia__card v2-question paired-question${level === "connoisseur" ? " v2-connoisseur" : ""}`);
 	const label = el("p", "wv-trivia__eyebrow", `Question ${slot} of 4 `);
 	label.append(el("span", "v2-level", level.toUpperCase()));
 	const title = el("h3", "", question.prompt);
@@ -107,9 +107,9 @@ export function questionCard(question, savedChoice, submit) {
 	card.setAttribute("aria-labelledby", title.id);
 	card.append(label);
 	if (question.bench) card.append(benchHeader(question.bench));
-	if (question.image) card.append(el("p", "wv-trivia__eyebrow", "Name That Watch"));
+	if (question.image) card.append(el("p", "wv-trivia__eyebrow paired-feature", "Name That Watch"));
 	card.append(title);
-	const body = el("div");
+	const body = el("div", "paired-body");
 	card.append(body);
 	const reveal = (choice, focus) => {
 		const nodes = review(question, choice);
@@ -121,9 +121,12 @@ export function questionCard(question, savedChoice, submit) {
 		return card;
 	}
 	if (question.image) body.append(picture(question.image, false));
-	const form = el("form");
-	const fields = el("fieldset");
-	fields.append(el("legend", "wv-trivia__legend", "Choose one answer"));
+	const form = el("form", "paired-form");
+	const legend = el("p", "wv-trivia__legend", "Choose one answer");
+	legend.id = `choices-${slot}`;
+	const optionsGroup = el("div", "paired-options");
+	optionsGroup.setAttribute("role", "radiogroup");
+	optionsGroup.setAttribute("aria-labelledby", legend.id);
 	question.options.forEach((text, index) => {
 		const option = el("label", "wv-trivia__option");
 		const input = el("input");
@@ -132,11 +135,11 @@ export function questionCard(question, savedChoice, submit) {
 		input.value = index;
 		input.required = true;
 		option.append(input, ...optionText(text, index));
-		fields.append(option);
+		optionsGroup.append(option);
 	});
 	const save = button("Submit answer");
 	save.type = "submit";
-	form.append(fields, save);
+	form.append(legend, optionsGroup, save);
 	form.addEventListener("submit", (event) => {
 		event.preventDefault();
 		const selected = form.querySelector("input:checked");
