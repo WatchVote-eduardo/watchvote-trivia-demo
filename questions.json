@@ -1,0 +1,16 @@
+[
+  {"date":"2026-11-25","title":"Which part stores energy in a mechanical watch?","options":["Quartz crystal","Mainspring","Balance wheel","Escape wheel"],"correct":1},
+  {"date":"2026-11-26","title":"What does a chronograph measure?","options":["Altitude","Elapsed time","Magnetic field strength","Power reserve"],"correct":1},
+  {"date":"2026-11-27","title":"What moves to wind most automatic watches as they are worn?","options":["Rotor","Minute hand","Date wheel","Bezel"],"correct":0},
+  {"date":"2026-11-28","title":"What does a GMT hand usually indicate on a 24-hour scale?","options":["Elapsed minutes","The day of the month","A second time zone","The remaining power reserve"],"correct":2},
+  {"date":"2026-11-29","title":"What is synthetic sapphire used for on many watches?","options":["The mainspring","The dial crystal","The winding stem","The battery"],"correct":1},
+  {"date":"2026-11-30","title":"What does a moonphase display show?","options":["The current phase of the Moon","The time until sunrise","The length of a sidereal day","A tide height in metres"],"correct":0},
+  {"date":"2026-12-01","title":"Which frequency is standard for the quartz crystal in most quartz wristwatches?","options":["60 Hz","1,000 Hz","3,600 Hz","32,768 Hz"],"correct":3},
+  {"date":"2026-12-02","title":"Which complication shows the running time left before a watch needs winding?","options":["Tachymeter","Power reserve indicator","Annual calendar","Retrograde seconds"],"correct":1},
+  {"date":"2026-12-03","title":"In watchmaking, what does a minute repeater do?","options":["Stops the seconds hand","Sounds the time on demand","Repeats a chronograph lap","Corrects the date at midnight"],"correct":1},
+  {"date":"2026-12-04","title":"Why does a dive watch usually have a bezel that turns in only one direction?","options":["To prevent water entering the crown","To make the watch run faster","To avoid accidentally understating elapsed dive time","To switch between two time zones"],"correct":2},
+  {"date":"2026-12-05","title":"Who patented the tourbillon in 1801?","options":["John Harrison","George Daniels","Louis Cartier","Abraham-Louis Breguet"],"correct":3},
+  {"date":"2026-12-06","title":"What does a perpetual calendar account for that an annual calendar does not?","options":["Leap years","Month lengths","The position of the minute hand","Elapsed seconds"],"correct":0},
+  {"date":"2026-12-07","title":"Which watch scale can estimate average speed over a known distance?","options":["Telemeter","Tachymeter","Pulsometer","24-hour scale"],"correct":1},
+  {"date":"2026-12-08","title":"What does a watch’s escapement do?","options":["Sets the date independently","Stores energy in the barrel","Releases the gear train in controlled steps","Amplifies a minute repeater’s sound"],"correct":2}
+]

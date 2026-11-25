@@ -1,0 +1,453 @@
+@font-face {
+	font-family: "WatchVote Jost";
+	src: url("assets/fonts/jost-latin-wght-normal.woff2") format("woff2");
+	font-weight: 100 900;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "WatchVote Cormorant";
+	src: url("assets/fonts/cormorant-garamond-latin-wght-normal.woff2") format("woff2");
+	font-weight: 300 700;
+	font-display: swap;
+}
+
+body {
+	margin: 0;
+}
+
+.wv-trivia {
+	--wv-ink: #0e152a;
+	--wv-paper: #fff;
+	--wv-accent: #76c146;
+	--wv-bronze: #855521;
+	--wv-muted: #4f4f4f;
+	--wv-line: #e8e0d6;
+	--wv-warm: #f8f3ef;
+	--wv-sand: #ebddcf;
+	--wv-display: "WatchVote Cormorant", "Cormorant Garamond", Georgia, serif;
+}
+
+.wv-trivia {
+	background: var(--wv-warm);
+	box-sizing: border-box;
+	color: var(--wv-ink);
+	container: wv-trivia / inline-size;
+	flex: 1 1 100%;
+	font-family: "WatchVote Jost", Jost, system-ui, sans-serif;
+	font-size: 1rem;
+	line-height: 1.5;
+	margin: 0 auto 2rem;
+	min-width: 0;
+	width: 100%;
+}
+
+.wv-trivia__demo-note {
+	display: block;
+	margin-top: .75rem;
+	color: var(--wv-muted);
+}
+
+.wv-trivia *,
+.wv-trivia *::before,
+.wv-trivia *::after {
+	box-sizing: border-box;
+}
+
+.wv-trivia h2,
+.wv-trivia h3 {
+	color: inherit;
+	font-family: var(--wv-display);
+	font-weight: 700;
+	line-height: 1.05;
+	margin: 0 0 .65rem;
+}
+
+.wv-trivia h3 {
+	font-size: clamp(1.8rem, 4vw, 2.7rem);
+}
+
+.wv-trivia__masthead {
+	background: var(--wv-paper);
+	text-align: center;
+}
+
+.wv-trivia .wv-trivia__tagline {
+	background: var(--wv-ink);
+	color: var(--wv-paper);
+	font-size: .875rem;
+	font-weight: 500;
+	margin: 0;
+	padding: .52rem 1rem;
+}
+
+.wv-trivia__brand { padding: 1rem 1rem .65rem; }
+
+.wv-trivia__wordmark {
+	display: inline-flex;
+	flex-direction: column;
+	font-size: clamp(1.55rem, 4vw, 2rem);
+	font-weight: 300;
+	letter-spacing: -.055em;
+	line-height: 1;
+}
+
+.wv-trivia__wordmark b { font-weight: 700; }
+.wv-trivia__wordmark svg {
+	display: inline-block;
+	height: .79em;
+	margin-inline: -.035em;
+	vertical-align: -.016em;
+	width: .79em;
+}
+
+.wv-trivia__wordmark small {
+	font-size: .43em;
+	font-weight: 400;
+	letter-spacing: .01em;
+	margin-top: .2rem;
+}
+
+.wv-trivia__tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: clamp(.6rem, 4vw, 2rem);
+	justify-content: center;
+}
+
+.wv-trivia .wv-trivia__tabs a {
+	border-bottom: 2px solid transparent;
+	color: var(--wv-ink);
+	font-size: .9375rem;
+	font-weight: 500;
+	min-height: 2.75rem;
+	padding: .65rem .4rem .55rem;
+	text-decoration: none;
+}
+
+.wv-trivia .wv-trivia__tabs a:first-child { border-color: var(--wv-ink); }
+.wv-trivia .wv-trivia__tabs a:hover { color: var(--wv-bronze); }
+.wv-trivia .wv-trivia__tabs a:focus-visible { outline: 2px solid var(--wv-bronze); outline-offset: -2px; }
+
+.wv-trivia__body {
+	margin-inline: auto;
+	max-width: 77rem;
+	padding: clamp(1.75rem, 4.5vw, 3.75rem) clamp(.9rem, 4vw, 3rem) clamp(2.25rem, 6vw, 5rem);
+}
+
+.wv-trivia__intro {
+	margin: 0 0 clamp(1.5rem, 4vw, 2.65rem);
+	text-align: center;
+}
+
+.wv-trivia__intro h2 {
+	font-size: clamp(2.8rem, 6.2vw, 4.9rem);
+	line-height: .98;
+}
+
+.wv-trivia__intro p:last-child,
+.wv-trivia__round-content > p:not(.wv-trivia__eyebrow) {
+	color: var(--wv-muted);
+	font-size: clamp(.975rem, 2.5vw, 1.125rem);
+	margin-bottom: 0;
+}
+
+.wv-trivia .wv-trivia__eyebrow {
+	color: var(--wv-bronze);
+	font-size: .8rem;
+	font-weight: 700;
+	letter-spacing: .135em;
+	line-height: 1.35;
+	margin: 0 0 .55rem;
+	text-transform: uppercase;
+}
+
+.wv-trivia .wv-trivia__card {
+	background: var(--wv-paper);
+	border: 1px solid var(--wv-line);
+	border-radius: .625rem;
+}
+
+.wv-trivia__round {
+	display: grid;
+	grid-template-columns: minmax(0, 1.3fr) minmax(0, .85fr);
+	overflow: hidden;
+}
+.wv-trivia__round { scroll-margin-top: 1rem; }
+
+.wv-trivia__round-content {
+	align-self: center;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	padding: clamp(1.25rem, 4vw, 3rem);
+}
+
+.wv-trivia__dial {
+	background: var(--wv-sand) url("assets/trivia-dial.svg") center / cover no-repeat;
+	min-height: 22rem;
+}
+
+.wv-trivia fieldset { border: 0; margin: 0; min-width: 0; padding: 0; }
+.wv-trivia .wv-trivia__legend {
+	color: var(--wv-muted);
+	font-size: .9375rem;
+	font-weight: 500;
+	line-height: 1.4;
+	margin: .55rem 0 .6rem;
+	padding: 0;
+}
+.wv-trivia .wv-trivia__option {
+	align-items: center;
+	background: var(--wv-warm);
+	border: 1px solid var(--wv-line);
+	border-radius: .5rem;
+	cursor: pointer;
+	display: flex;
+	font-weight: 500;
+	gap: .65rem;
+	line-height: 1.4;
+	margin-bottom: .48rem;
+	min-height: 3rem;
+	padding: .5rem .75rem;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+	transition: background-color .15s ease, border-color .15s ease;
+}
+.wv-trivia .wv-trivia__option:focus-within {
+	outline: 2px solid var(--wv-bronze);
+	outline-offset: 2px;
+}
+.wv-trivia .wv-trivia__option:has(input:checked) {
+	background: var(--wv-ink);
+	border-color: var(--wv-ink);
+	color: var(--wv-paper);
+}
+.wv-trivia .wv-trivia__option input {
+	accent-color: var(--wv-bronze);
+	flex-shrink: 0;
+	height: 1.25rem;
+	margin: 0;
+	width: 1.25rem;
+}
+.wv-trivia__letter {
+	background: var(--wv-paper);
+	border: 1px solid var(--wv-line);
+	border-radius: .25rem;
+	color: var(--wv-bronze);
+	display: grid;
+	flex-shrink: 0;
+	font-size: .8rem;
+	font-weight: 700;
+	min-height: 1.55rem;
+	min-width: 1.55rem;
+	place-items: center;
+}
+
+.wv-trivia__option:has(input:checked) .wv-trivia__letter {
+	background: var(--wv-sand);
+	border-color: var(--wv-sand);
+}
+.wv-trivia__option-text {
+	min-width: 0;
+	overflow-wrap: break-word;
+}
+
+.wv-trivia .wv-trivia__button {
+	align-items: center;
+	background: var(--wv-ink);
+	border: 2px solid var(--wv-ink);
+	border-radius: .5rem;
+	color: var(--wv-paper);
+	cursor: pointer;
+	display: inline-flex;
+	font: inherit;
+	font-weight: 600;
+	justify-content: center;
+	line-height: 1.25;
+	margin-top: .75rem;
+	min-height: 3rem;
+	padding: .75rem 1.35rem;
+	text-align: center;
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+	touch-action: manipulation;
+}
+@media (hover: hover) {
+	.wv-trivia fieldset .wv-trivia__option:hover:not(:has(input:checked)) {
+		border-color: var(--wv-bronze);
+	}
+	.wv-trivia .wv-trivia__button:hover {
+		background: var(--wv-bronze);
+		border-color: var(--wv-bronze);
+	}
+}
+.wv-trivia .wv-trivia__button:active {
+	background: var(--wv-bronze);
+	border-color: var(--wv-bronze);
+}
+.wv-trivia .wv-trivia__button:focus-visible { outline: 2px solid var(--wv-bronze); outline-offset: 3px; }
+.wv-trivia__actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: .75rem; }
+.wv-trivia__actions .wv-trivia__button { margin-top: 0; }
+.wv-trivia .wv-trivia__button--secondary { background: var(--wv-paper); color: var(--wv-ink); }
+.wv-trivia .wv-trivia__button--secondary:hover,
+.wv-trivia .wv-trivia__button--secondary:active {
+	background: var(--wv-bronze);
+	border-color: var(--wv-bronze);
+	color: var(--wv-paper);
+}
+.wv-trivia__feedback {
+	background: #eef5e7;
+	border: 1px solid #b9cead;
+	border-inline-start: .25rem solid #52843b;
+	border-radius: .375rem;
+	color: #24471f;
+	font-weight: 600;
+	line-height: 1.45;
+	margin: 0 0 1rem;
+	padding: .75rem 1rem;
+}
+.wv-trivia__feedback--incorrect {
+	background: #fbefe8;
+	border-color: #e4c8b5;
+	border-inline-start-color: #a34e30;
+	color: #6e341c;
+}
+.wv-trivia__alert {
+	background: #fef2f2;
+	border-left: .25rem solid #b91c1c;
+	border-radius: 0 .35rem .35rem 0;
+	color: #7f1d1d;
+	font-weight: 600;
+	line-height: 1.45;
+	margin: 0 0 1rem;
+	padding: .75rem 1rem;
+}
+.wv-trivia__hint {
+	color: var(--wv-muted);
+	font-size: .875rem;
+	line-height: 1.45;
+	margin: .75rem 0 0;
+}
+
+.wv-trivia .wv-trivia__review { list-style: none; margin: 0; padding: 0; }
+.wv-trivia .wv-trivia__review .wv-trivia__option { cursor: default; flex-wrap: wrap; }
+.wv-trivia .wv-trivia__option--correct { background: #eef5e7; border-color: #b9cead; }
+.wv-trivia .wv-trivia__option--incorrect { background: #fbefe8; border-color: #e4c8b5; }
+.wv-trivia__badge {
+	background: var(--wv-ink);
+	border-radius: .3rem;
+	color: var(--wv-paper);
+	display: inline-block;
+	font-size: .75rem;
+	font-weight: 700;
+	padding: .1em .45em;
+}
+.wv-trivia__review .wv-trivia__badge { margin-inline-start: auto; }
+.wv-trivia__option--correct .wv-trivia__badge { background: #24471f; }
+.wv-trivia__option--incorrect .wv-trivia__badge { background: #6e341c; }
+
+.wv-trivia__standings {
+	border-top: 1px solid var(--wv-line);
+	margin-top: clamp(1.6rem, 4vw, 3rem);
+	padding-top: clamp(1.6rem, 4vw, 2.75rem);
+	text-align: center;
+}
+
+.wv-trivia__standings h2 { font-size: clamp(2rem, 4vw, 3.15rem); }
+.wv-trivia__boards {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin-top: 1.15rem;
+	text-align: start;
+}
+
+.wv-trivia .wv-trivia__board { padding: clamp(1rem, 3vw, 1.65rem); }
+.wv-trivia__board h3 { font-size: clamp(1.65rem, 3.5vw, 2.1rem); }
+.wv-trivia .wv-trivia__board-description { color: var(--wv-muted); font-size: .95rem; margin: 0 0 .8rem; }
+.wv-trivia__table-wrap {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.wv-trivia .wv-trivia__board table {
+	border-collapse: collapse;
+	font-size: .9375rem;
+	line-height: 1.35;
+	margin: 0;
+	width: 100%;
+}
+.wv-trivia .wv-trivia__board th,
+.wv-trivia .wv-trivia__board td {
+	background: var(--wv-paper);
+	border: 0;
+	border-bottom: 1px solid var(--wv-line);
+	padding: .6rem .5rem;
+	text-align: left;
+	vertical-align: middle;
+}
+.wv-trivia .wv-trivia__board thead th {
+	background: var(--wv-warm);
+	color: var(--wv-bronze);
+	font-size: .8125rem;
+	font-weight: 600;
+	letter-spacing: .03em;
+	white-space: nowrap;
+}
+.wv-trivia .wv-trivia__board .wv-trivia__col-rank {
+	font-variant-numeric: tabular-nums;
+	text-align: center;
+	white-space: nowrap;
+	width: 1%;
+}
+.wv-trivia .wv-trivia__board .wv-trivia__col-player {
+	overflow-wrap: anywhere;
+}
+.wv-trivia .wv-trivia__board .wv-trivia__col-num {
+	font-variant-numeric: tabular-nums;
+	text-align: right;
+	white-space: nowrap;
+	width: 1%;
+}
+.wv-trivia .wv-trivia__board tbody tr.wv-trivia__row--current th,
+.wv-trivia .wv-trivia__board tbody tr.wv-trivia__row--current td {
+	background: #f3ebe0;
+	font-weight: 700;
+}
+
+@media (max-width: 46rem) {
+	.wv-trivia__boards { grid-template-columns: minmax(0, 1fr); }
+	.wv-trivia__round { grid-template-columns: minmax(0, 1fr); }
+	.wv-trivia__dial {
+		background-size: min(21rem, 100%) auto;
+		background-repeat: repeat-x;
+		min-height: clamp(8rem, 30vw, 12rem);
+	}
+}
+
+@container wv-trivia (max-width: 46rem) {
+	.wv-trivia__boards,
+	.wv-trivia__round { grid-template-columns: minmax(0, 1fr); }
+	.wv-trivia__body { padding-inline: clamp(.9rem, 4cqi, 3rem); }
+	.wv-trivia__dial {
+		background-size: min(21rem, 100%) auto;
+		background-repeat: repeat-x;
+		min-height: clamp(8rem, 30cqi, 12rem);
+	}
+}
+
+@media (max-width: 36rem) {
+	.wv-trivia .wv-trivia__tagline { font-size: .75rem; }
+	.wv-trivia .wv-trivia__button {
+		width: 100%;
+	}
+	.wv-trivia .wv-trivia__board table {
+		font-size: .875rem;
+	}
+	.wv-trivia .wv-trivia__board th,
+	.wv-trivia .wv-trivia__board td {
+		padding: .55rem .35rem;
+	}
+	.wv-trivia .wv-trivia__board thead th {
+		font-size: .78rem;
+	}
+}
