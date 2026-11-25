@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex, nofollow">
+	<title>WatchVote Daily Trivia · Collectors’ Edition</title>
+	<link rel="stylesheet" href="../trivia.css">
+	<link rel="stylesheet" href="./v2.css">
+	<script type="module" src="./app.mjs"></script>
+</head>
+<body>
+	<main class="wv-trivia v2" aria-label="WatchVote Daily Trivia">
+		<header class="wv-trivia__masthead">
+			<p class="wv-trivia__tagline">Elevating horology by strengthening the collector’s voice</p>
+			<div class="wv-trivia__brand">
+				<div class="wv-trivia__wordmark" role="img" aria-label="WatchVote by Collectors">
+					<span aria-hidden="true">WATCH<b>V<svg viewBox="0 0 24 24" focusable="false">
+						<path d="M9 2h6m4 3 2-2M12 6v2m7 5h-2m-5 7v-2M5 13h2" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+						<circle cx="12" cy="13" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+						<path d="m8.5 13 2.4 2.4L16 10" fill="none" stroke="var(--wv-accent)" stroke-width="1.7" stroke-linecap="round"/>
+					</svg>TE</b></span>
+					<small aria-hidden="true">By Collectors</small>
+				</div>
+			</div>
+			<nav class="wv-trivia__tabs" aria-label="On this page">
+				<a href="#today">Daily Trivia</a>
+				<a href="#standings">Leaderboards</a>
+			</nav>
+		</header>
+		<div class="wv-trivia__body">
+			<div class="wv-trivia__intro">
+				<p class="wv-trivia__eyebrow">The Daily Challenge</p>
+				<h2>Daily Trivia</h2>
+				<p>Four questions, from Easy to Connoisseur. How well do you know watches?</p>
+				<small class="wv-trivia__demo-note">Demo · Scores stay in this browser. Community stats and other players are simulated.</small>
+			</div>
+			<section class="wv-trivia__card wv-trivia__round v2-summary" aria-labelledby="today">
+				<div class="wv-trivia__round-content">
+					<p class="wv-trivia__eyebrow"><time id="round-date"></time></p>
+					<h3 id="today">Today’s round</h3>
+					<p id="challenge-note" hidden></p>
+					<p id="progress" role="status">Loading today’s questions…</p>
+					<p id="rank"></p>
+					<p id="rank-progress"></p>
+					<p id="level-up" role="status" hidden></p>
+					<p>Answer at least one question to keep your streak going.</p>
+					<noscript><p>Enable JavaScript to play this demo.</p></noscript>
+				</div>
+				<div class="wv-trivia__dial" aria-hidden="true"></div>
+			</section>
+			<div class="v2-questions" id="questions"></div>
+			<div id="social"></div>
+			<section class="wv-trivia__standings" id="standings" aria-labelledby="standings-title">
+				<p class="wv-trivia__eyebrow">The Collector Community</p>
+				<h2 id="standings-title">The collectors’ standings</h2>
+				<div class="wv-trivia__boards" id="boards"></div>
+			</section>
+		</div>
+	</main>
+</body>
+</html>

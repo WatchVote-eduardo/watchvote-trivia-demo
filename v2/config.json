@@ -1,0 +1,25 @@
+{
+  "time_zone": "America/New_York",
+  "bench_day": 5,
+  "picture_day": 3,
+  "picture_slot": 2,
+  "share_url": "watchvote.com/trivia",
+  "ranks": [
+    {"title":"Apprentice","min_correct":0},
+    {"title":"Journeyman","min_correct":50},
+    {"title":"Watchmaker","min_correct":150},
+    {"title":"Master Watchmaker","min_correct":350},
+    {"title":"Master Horologer","min_correct":700}
+  ],
+  "sample_players": [
+    {"name":"Avery","correct":772,"current":17,"best":42},
+    {"name":"Lin","correct":536,"current":9,"best":33},
+    {"name":"Rowan","correct":402,"current":24,"best":24},
+    {"name":"Remy","correct":227,"current":5,"best":14},
+    {"name":"Sam","correct":157,"current":10,"best":12},
+    {"name":"Cameron","correct":128,"current":2,"best":18},
+    {"name":"Jo","correct":66,"current":7,"best":9},
+    {"name":"Finley","correct":24,"current":0,"best":3},
+    {"name":"Taylor","correct":8,"current":2,"best":2}
+  ]
+}
