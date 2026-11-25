@@ -1,7 +1,7 @@
 import { challengeFrom, displayDay, gameDay, makeSchedule, rankFor, resultsFor, scoreHistory, summarize, validDay } from "../v2/model.mjs";
 import { sharePanel } from "../v2/share.mjs";
 import { button, comparison, el, leaderboard, questionCard } from "../v2/view.mjs";
-import { firstUnanswered, nextAction, swipeDirection, swipeIntent } from "./navigation.mjs";
+import { firstUnanswered, nearestSlide, nextAction, summaryAvailable } from "./navigation.mjs";
 
 const storageKey = "watchvote-trivia-carousel";
 const url = new URL(location.href);
@@ -12,7 +12,7 @@ const datePreview = validDay(override);
 const key = datePreview ? `${storageKey}-date-preview` : storageKey;
 const dom = Object.fromEntries([
 	"round-date", "today", "challenge-note", "progress", "rank", "rank-progress", "level-up",
-	"question-carousel", "question-viewport", "questions", "steps", "previous", "next", "round-summary", "summary-title", "summary-score", "social", "boards"
+	"question-carousel", "question-viewport", "questions", "steps", "previous", "next", "summary-home", "round-summary", "summary-title", "summary-score", "social", "boards"
 ].map((id) => [id, document.getElementById(id)]));
 const viewport = dom["question-viewport"];
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -25,7 +25,7 @@ let shownDay;
 let shownDate;
 let active = 0;
 let outcomes = "----";
-let gesture;
+let pendingSlide;
 
 function readState() {
 	if (canStore) {
@@ -61,10 +61,13 @@ function roundState(state, currentDay) {
 	return { date, practice, answers };
 }
 
-function openSummary() {
-	const heading = dom["summary-title"];
-	heading.focus({ preventScroll: true });
-	dom["round-summary"].scrollIntoView({ block: "start", behavior: reducedMotion.matches ? "instant" : "smooth" });
+function slideCenter(slide) {
+	return slide.offsetLeft + slide.offsetWidth / 2;
+}
+
+function scrollToSlide(index, behavior) {
+	const slide = dom.questions.children[index];
+	viewport.scrollTo({ left: slideCenter(slide) - viewport.clientWidth / 2, behavior });
 }
 
 function resizeViewport() {
@@ -73,48 +76,57 @@ function resizeViewport() {
 }
 
 function refreshNavigation() {
-	const complete = !outcomes.includes("-");
+	const last = dom.questions.children.length - 1;
 	dom.previous.setAttribute("aria-disabled", String(active === 0));
-	dom.next.setAttribute("aria-disabled", String(active === outcomes.length - 1 && !complete));
-	dom.next.setAttribute("aria-label", active === outcomes.length - 1 && complete ? "View round summary" : "Next question");
+	dom.next.setAttribute("aria-disabled", String(active === last));
+	dom.next.setAttribute("aria-label", active === outcomes.length - 1 && last > active ? "View round summary" : "Next question");
+	for (const [index, step] of [...dom.steps.children].entries()) {
+		if (index === active) step.setAttribute("aria-current", "step");
+		else step.removeAttribute("aria-current");
+	}
+	for (const [index, card] of [...dom.questions.children].entries()) {
+		card.inert = index !== active;
+	}
+	slideResize.disconnect();
+	slideResize.observe(dom.questions.children[active]);
+	resizeViewport();
+}
+
+function refreshResults() {
 	for (const [index, step] of [...dom.steps.children].entries()) {
 		const result = outcomes[index];
 		const label = { "1": "correct", "0": "incorrect", "-": "unanswered" }[result];
 		step.dataset.result = result;
 		step.setAttribute("aria-label", `Question ${index + 1}, ${step.lastChild.textContent}, ${label}`);
 		step.firstChild.textContent = { "1": "✓", "0": "×", "-": index + 1 }[result];
-		if (index === active) step.setAttribute("aria-current", "step");
-		else step.removeAttribute("aria-current");
-		const card = dom.questions.children[index];
-		card.inert = index !== active;
-		if (index === active) card.removeAttribute("aria-hidden");
-		else card.setAttribute("aria-hidden", "true");
 		const action = nextAction(outcomes, index);
-		const footer = card.lastElementChild;
+		const footer = dom.questions.children[index].lastElementChild;
 		footer.replaceChildren();
-		if (action) footer.append(button(action.label, () => {
-			if (action.index === undefined) openSummary();
-			else selectQuestion(action.index);
-		}));
+		if (action) footer.append(button(action.label, () => selectQuestion(action.index ?? outcomes.length)));
 	}
-	dom.questions.style.setProperty("--slide-index", active);
-	slideResize.disconnect();
-	slideResize.observe(dom.questions.children[active]);
-	resizeViewport();
+	refreshNavigation();
+}
+
+function finishScroll() {
+	const slides = [...dom.questions.children];
+	if (!slides.length) return;
+	const index = nearestSlide(slides.map(slideCenter), viewport.scrollLeft + viewport.clientWidth / 2);
+	const moveFocus = pendingSlide === index || (index !== active && slides[active].contains(document.activeElement));
+	pendingSlide = undefined;
+	if (index !== active) {
+		active = index;
+		refreshNavigation();
+	}
+	if (moveFocus) slides[active].querySelector("h2, h3").focus({ preventScroll: true });
 }
 
 function selectQuestion(index) {
-	if (index === outcomes.length && !outcomes.includes("-")) {
-		openSummary();
-		return;
-	}
-	if (index < 0 || index >= outcomes.length || index === active) return;
-	active = index;
-	refreshNavigation();
-	const heading = dom.questions.children[active].querySelector("h3");
-	heading.focus({ preventScroll: true });
+	if (!dom.questions.children[index] || index === (pendingSlide ?? active)) return;
+	pendingSlide = index;
 	const bounds = dom["question-carousel"].getBoundingClientRect();
 	if (bounds.top < 0 || bounds.top > innerHeight / 2) dom["question-carousel"].scrollIntoView({ block: "start" });
+	scrollToSlide(index, reducedMotion.matches ? "instant" : "smooth");
+	if (reducedMotion.matches) finishScroll();
 }
 
 function drawScores(state, day, round, quiz, choices, levelUp) {
@@ -133,6 +145,11 @@ function drawScores(state, day, round, quiz, choices, levelUp) {
 	}
 	const players = [...config.sample_players, { name: "You", you: true, ...stats }];
 	dom.boards.replaceChildren(leaderboard(players, config.ranks, false), leaderboard(players, config.ranks, true));
+	const summary = dom["round-summary"];
+	const summaryParent = summaryAvailable(outcomes) ? dom.questions : dom["summary-home"];
+	if (summary.parentElement !== summaryParent) summaryParent.append(summary);
+	summary.inert = false;
+	if (active >= dom.questions.children.length) active = dom.questions.children.length - 1;
 	dom["round-summary"].hidden = !played;
 	dom["summary-title"].textContent = complete ? "Round complete" : "Round in progress";
 	dom["summary-score"].textContent = `${correct}/4 correct · Streak: ${stats.current} ${stats.current === 1 ? "day" : "days"}`;
@@ -143,11 +160,11 @@ function drawScores(state, day, round, quiz, choices, levelUp) {
 		bench: quiz.find((question) => question.bench)?.bench.name
 	}, complete));
 	dom.social.replaceChildren(...panels);
-	refreshNavigation();
+	refreshResults();
 }
 
 function draw() {
-	resetGesture();
+	pendingSlide = undefined;
 	const day = today();
 	shownDay = day;
 	const state = readState();
@@ -203,7 +220,8 @@ function draw() {
 	drawScores(state, day, round, quiz, round.answers);
 	dom["question-carousel"].hidden = false;
 	resizeViewport();
-	if (restoreFocus) dom.questions.children[active].querySelector("h3").focus({ preventScroll: true });
+	scrollToSlide(active, "instant");
+	if (restoreFocus) dom.questions.children[active].querySelector("h2, h3").focus({ preventScroll: true });
 }
 
 async function loadJson(path) {
@@ -223,70 +241,24 @@ function resolveAssets(question) {
 	};
 }
 
-dom.previous.addEventListener("click", () => selectQuestion(active - 1));
-dom.next.addEventListener("click", () => selectQuestion(active + 1));
+dom.previous.addEventListener("click", () => selectQuestion((pendingSlide ?? active) - 1));
+dom.next.addEventListener("click", () => selectQuestion((pendingSlide ?? active) + 1));
 dom["question-carousel"].addEventListener("keydown", (event) => {
 	if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
 		event.target.closest("input, textarea, select, [contenteditable]")) return;
 	if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
 	event.preventDefault();
-	selectQuestion(active + (event.key === "ArrowRight" ? 1 : -1));
+	selectQuestion((pendingSlide ?? active) + (event.key === "ArrowRight" ? 1 : -1));
 });
-function resetGesture() {
-	gesture = null;
-	delete viewport.dataset.dragging;
-	dom.questions.style.removeProperty("--drag-x");
+if ("onscrollend" in viewport) {
+	viewport.addEventListener("scrollend", finishScroll);
+} else {
+	let settle;
+	viewport.addEventListener("scroll", () => {
+		clearTimeout(settle);
+		settle = setTimeout(finishScroll, 160);
+	}, { passive: true });
 }
-
-dom.questions.addEventListener("touchstart", (event) => {
-	resetGesture();
-	if (event.touches.length !== 1) return;
-	const { identifier, clientX, clientY } = event.touches[0];
-	gesture = { identifier, clientX, clientY, intent: null, samples: [{ x: clientX, time: event.timeStamp }] };
-}, { passive: true });
-dom.questions.addEventListener("touchmove", (event) => {
-	if (event.touches.length !== 1) {
-		resetGesture();
-		return;
-	}
-	const touch = event.touches[0];
-	if (!gesture || touch.identifier !== gesture.identifier) return;
-	const dx = touch.clientX - gesture.clientX;
-	const dy = touch.clientY - gesture.clientY;
-	gesture.samples = gesture.samples.filter(({ time }) => event.timeStamp - time <= 100);
-	gesture.samples.push({ x: touch.clientX, time: event.timeStamp });
-	gesture.intent ??= swipeIntent(dx, dy);
-	if (gesture.intent === "vertical") {
-		resetGesture();
-	} else if (gesture.intent === "horizontal") {
-		event.preventDefault();
-		const width = viewport.clientWidth;
-		if (gesture.offset === undefined) {
-			const current = new DOMMatrixReadOnly(getComputedStyle(dom.questions).transform).m41;
-			gesture.offset = current + active * width;
-			viewport.dataset.dragging = "";
-		}
-		const hasNeighbour = dx > 0 ? active > 0 : active < outcomes.length - 1;
-		const offset = Math.max(-width, Math.min(width, gesture.offset + dx * (hasNeighbour ? 1 : .25)));
-		dom.questions.style.setProperty("--drag-x", `${offset}px`);
-	}
-}, { passive: false });
-dom.questions.addEventListener("touchcancel", resetGesture, { passive: true });
-dom.questions.addEventListener("touchend", (event) => {
-	const touch = gesture && Array.from(event.changedTouches).find((point) => point.identifier === gesture.identifier);
-	if (!touch) return;
-	const sample = gesture.samples.find(({ time }) => event.timeStamp - time <= 100);
-	const velocity = sample ? (touch.clientX - sample.x) / Math.max(1, event.timeStamp - sample.time) : 0;
-	const direction = swipeDirection(touch.clientX - gesture.clientX, touch.clientY - gesture.clientY, velocity);
-	const wasDragging = gesture.intent === "horizontal";
-	resetGesture();
-	if (!wasDragging && !direction) return;
-	event.preventDefault();
-	if (!direction) return;
-	const index = active + direction;
-	if (index === outcomes.length && outcomes[active] !== "-") openSummary();
-	else selectQuestion(index);
-}, { passive: false });
 
 try {
 	const [questions, settings] = await Promise.all([loadJson(deck), loadJson("../v2/config.json")]);

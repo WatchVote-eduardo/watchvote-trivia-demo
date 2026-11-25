@@ -10,13 +10,11 @@ export function nextAction(results, active) {
 	return { label: "View round summary" };
 }
 
-export function swipeIntent(dx, dy) {
-	if (Math.max(Math.abs(dx), Math.abs(dy)) < 10) return null;
-	return Math.abs(dx) > 1.4 * Math.abs(dy) ? "horizontal" : "vertical";
+export function summaryAvailable(results) {
+	return results.endsWith("1") || results.endsWith("0");
 }
 
-export function swipeDirection(dx, dy, velocity = 0) {
-	const flick = Math.abs(dx) >= 16 && Math.sign(dx) * velocity >= .45;
-	if ((!flick && Math.abs(dx) < 48) || swipeIntent(dx, dy) !== "horizontal") return 0;
-	return dx < 0 ? 1 : -1;
+export function nearestSlide(centers, viewportCenter) {
+	return centers.reduce((closest, center, index) =>
+		Math.abs(center - viewportCenter) < Math.abs(centers[closest] - viewportCenter) ? index : closest, 0);
 }

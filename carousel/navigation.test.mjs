@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { firstUnanswered, nextAction, swipeDirection, swipeIntent } from "./navigation.mjs";
+import { firstUnanswered, nearestSlide, nextAction, summaryAvailable } from "./navigation.mjs";
 
 test("resumes at the first unanswered question or the final review", () => {
 	assert.equal(firstUnanswered("----"), 0);
@@ -15,22 +15,16 @@ test("only a locked card offers the next question, unfinished question, or summa
 	assert.deepEqual(nextAction("1001", 3), { label: "View round summary" });
 });
 
-test("recognizes deliberate horizontal swipes but not taps, diagonal motion or scrolling", () => {
-	assert.equal(swipeIntent(6, 5), null);
-	assert.equal(swipeIntent(-16, 8), "horizontal");
-	assert.equal(swipeIntent(18, 18), "vertical");
-	assert.equal(swipeDirection(-110, 15), 1);
-	assert.equal(swipeDirection(110, 15), -1);
-	assert.equal(swipeDirection(47, 0), 0);
-	assert.equal(swipeDirection(60, -55), 0);
-	assert.equal(swipeDirection(-60, 100), 0);
+test("the fifth slide is available as soon as question four is answered", () => {
+	assert.equal(summaryAvailable("111-"), false);
+	assert.equal(summaryAvailable("---0"), true);
+	assert.equal(summaryAvailable("---1"), true);
 });
 
-test("a short flick advances only with enough speed in the same direction", () => {
-	assert.equal(swipeDirection(-24, 4, -.8), 1);
-	assert.equal(swipeDirection(24, 4, .8), -1);
-	assert.equal(swipeDirection(-24, 4, -.2), 0);
-	assert.equal(swipeDirection(-24, 4, .8), 0);
-	assert.equal(swipeDirection(-12, 0, -.8), 0);
-	assert.equal(swipeDirection(24, 30, .8), 0);
+test("selects the slide closest to the viewport center, including the summary", () => {
+	const centers = [165.5, 462.3, 759.1, 1055.9, 1352.7];
+	assert.equal(nearestSlide(centers, 165.5), 0);
+	assert.equal(nearestSlide(centers, 620), 2);
+	assert.equal(nearestSlide(centers, 1352), 4);
+	assert.equal(nearestSlide(centers.slice(0, 4), 1352), 3);
 });
