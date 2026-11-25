@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { firstUnanswered, nextAction, swipeDirection } from "./navigation.mjs";
+import { firstUnanswered, nextAction, swipeDirection, swipeIntent } from "./navigation.mjs";
 
 test("resumes at the first unanswered question or the final review", () => {
 	assert.equal(firstUnanswered("----"), 0);
@@ -16,6 +16,9 @@ test("only a locked card offers the next question, unfinished question, or summa
 });
 
 test("recognizes deliberate horizontal swipes but not taps, diagonal motion or scrolling", () => {
+	assert.equal(swipeIntent(6, 5), null);
+	assert.equal(swipeIntent(-16, 8), "horizontal");
+	assert.equal(swipeIntent(18, 18), "vertical");
 	assert.equal(swipeDirection(-110, 15), 1);
 	assert.equal(swipeDirection(110, 15), -1);
 	assert.equal(swipeDirection(47, 0), 0);

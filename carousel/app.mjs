@@ -1,7 +1,7 @@
 import { challengeFrom, displayDay, gameDay, makeSchedule, rankFor, resultsFor, scoreHistory, summarize, validDay } from "../v2/model.mjs";
 import { sharePanel } from "../v2/share.mjs";
 import { button, comparison, el, leaderboard, questionCard } from "../v2/view.mjs";
-import { firstUnanswered, nextAction, swipeDirection } from "./navigation.mjs";
+import { firstUnanswered, nextAction, swipeDirection, swipeIntent } from "./navigation.mjs";
 
 const storageKey = "watchvote-trivia-carousel";
 const url = new URL(location.href);
@@ -23,7 +23,6 @@ let shownDate;
 let active = 0;
 let outcomes = "----";
 let gesture;
-let suppressClick = false;
 
 function readState() {
 	if (canStore) {
@@ -218,26 +217,48 @@ dom["question-carousel"].addEventListener("keydown", (event) => {
 	event.preventDefault();
 	selectQuestion(active + (event.key === "ArrowRight" ? 1 : -1));
 });
-dom.questions.addEventListener("pointerdown", (event) => {
-	suppressClick = false;
-	if (event.pointerType === "touch" && event.isPrimary) gesture = event;
-});
-dom.questions.addEventListener("pointercancel", () => { gesture = null; });
-dom.questions.addEventListener("pointerup", (event) => {
-	if (!gesture || gesture.pointerId !== event.pointerId) return;
-	const direction = swipeDirection(event.clientX - gesture.clientX, event.clientY - gesture.clientY);
+function resetGesture() {
 	gesture = null;
-	if (direction) {
-		suppressClick = true;
-		selectQuestion(active + direction);
+	dom.questions.style.removeProperty("--drag-x");
+}
+
+dom.questions.addEventListener("touchstart", (event) => {
+	resetGesture();
+	if (event.touches.length !== 1) return;
+	const { identifier, clientX, clientY } = event.touches[0];
+	gesture = { identifier, clientX, clientY, intent: null };
+}, { passive: true });
+dom.questions.addEventListener("touchmove", (event) => {
+	if (event.touches.length !== 1) {
+		resetGesture();
+		return;
 	}
-});
-dom.questions.addEventListener("click", (event) => {
-	if (suppressClick && event.detail) {
+	const touch = event.touches[0];
+	if (!gesture || touch.identifier !== gesture.identifier) return;
+	const dx = touch.clientX - gesture.clientX;
+	const dy = touch.clientY - gesture.clientY;
+	gesture.intent ??= swipeIntent(dx, dy);
+	if (gesture.intent === "vertical") {
+		resetGesture();
+	} else if (gesture.intent === "horizontal") {
 		event.preventDefault();
-		event.stopImmediatePropagation();
+		dom.questions.style.setProperty("--drag-x", `${Math.max(-44, Math.min(44, dx * .4))}px`);
 	}
-}, true);
+}, { passive: false });
+dom.questions.addEventListener("touchcancel", resetGesture, { passive: true });
+dom.questions.addEventListener("touchend", (event) => {
+	const touch = gesture && Array.from(event.changedTouches).find((point) => point.identifier === gesture.identifier);
+	if (!touch) return;
+	const direction = swipeDirection(touch.clientX - gesture.clientX, touch.clientY - gesture.clientY);
+	const wasDragging = gesture.intent === "horizontal";
+	resetGesture();
+	if (!wasDragging && !direction) return;
+	event.preventDefault();
+	if (!direction) return;
+	const index = active + direction;
+	if (index === outcomes.length && outcomes[active] !== "-") openSummary();
+	else selectQuestion(index);
+}, { passive: false });
 
 try {
 	const [questions, settings] = await Promise.all([loadJson(deck), loadJson("../v2/config.json")]);
