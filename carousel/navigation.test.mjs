@@ -25,3 +25,12 @@ test("recognizes deliberate horizontal swipes but not taps, diagonal motion or s
 	assert.equal(swipeDirection(60, -55), 0);
 	assert.equal(swipeDirection(-60, 100), 0);
 });
+
+test("a short flick advances only with enough speed in the same direction", () => {
+	assert.equal(swipeDirection(-24, 4, -.8), 1);
+	assert.equal(swipeDirection(24, 4, .8), -1);
+	assert.equal(swipeDirection(-24, 4, -.2), 0);
+	assert.equal(swipeDirection(-24, 4, .8), 0);
+	assert.equal(swipeDirection(-12, 0, -.8), 0);
+	assert.equal(swipeDirection(24, 30, .8), 0);
+});

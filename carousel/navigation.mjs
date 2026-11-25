@@ -15,7 +15,8 @@ export function swipeIntent(dx, dy) {
 	return Math.abs(dx) > 1.4 * Math.abs(dy) ? "horizontal" : "vertical";
 }
 
-export function swipeDirection(dx, dy) {
-	if (Math.abs(dx) < 48 || swipeIntent(dx, dy) !== "horizontal") return 0;
+export function swipeDirection(dx, dy, velocity = 0) {
+	const flick = Math.abs(dx) >= 16 && Math.sign(dx) * velocity >= .45;
+	if ((!flick && Math.abs(dx) < 48) || swipeIntent(dx, dy) !== "horizontal") return 0;
 	return dx < 0 ? 1 : -1;
 }

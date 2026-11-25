@@ -12,8 +12,11 @@ const datePreview = validDay(override);
 const key = datePreview ? `${storageKey}-date-preview` : storageKey;
 const dom = Object.fromEntries([
 	"round-date", "today", "challenge-note", "progress", "rank", "rank-progress", "level-up",
-	"question-carousel", "questions", "steps", "previous", "next", "round-summary", "summary-title", "summary-score", "social", "boards"
+	"question-carousel", "question-viewport", "questions", "steps", "previous", "next", "round-summary", "summary-title", "summary-score", "social", "boards"
 ].map((id) => [id, document.getElementById(id)]));
+const viewport = dom["question-viewport"];
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const slideResize = new ResizeObserver(resizeViewport);
 let cached;
 let canStore = true;
 let config;
@@ -61,7 +64,12 @@ function roundState(state, currentDay) {
 function openSummary() {
 	const heading = dom["summary-title"];
 	heading.focus({ preventScroll: true });
-	dom["round-summary"].scrollIntoView({ block: "start" });
+	dom["round-summary"].scrollIntoView({ block: "start", behavior: reducedMotion.matches ? "instant" : "smooth" });
+}
+
+function resizeViewport() {
+	const height = dom.questions.children[active]?.offsetHeight;
+	if (height) viewport.style.height = `${height}px`;
 }
 
 function refreshNavigation() {
@@ -78,7 +86,9 @@ function refreshNavigation() {
 		if (index === active) step.setAttribute("aria-current", "step");
 		else step.removeAttribute("aria-current");
 		const card = dom.questions.children[index];
-		card.hidden = index !== active;
+		card.inert = index !== active;
+		if (index === active) card.removeAttribute("aria-hidden");
+		else card.setAttribute("aria-hidden", "true");
 		const action = nextAction(outcomes, index);
 		const footer = card.lastElementChild;
 		footer.replaceChildren();
@@ -87,6 +97,10 @@ function refreshNavigation() {
 			else selectQuestion(action.index);
 		}));
 	}
+	dom.questions.style.setProperty("--slide-index", active);
+	slideResize.disconnect();
+	slideResize.observe(dom.questions.children[active]);
+	resizeViewport();
 }
 
 function selectQuestion(index) {
@@ -95,7 +109,6 @@ function selectQuestion(index) {
 		return;
 	}
 	if (index < 0 || index >= outcomes.length || index === active) return;
-	dom.questions.dataset.direction = index < active ? "back" : "forward";
 	active = index;
 	refreshNavigation();
 	const heading = dom.questions.children[active].querySelector("h3");
@@ -134,6 +147,7 @@ function drawScores(state, day, round, quiz, choices, levelUp) {
 }
 
 function draw() {
+	resetGesture();
 	const day = today();
 	shownDay = day;
 	const state = readState();
@@ -188,6 +202,7 @@ function draw() {
 	}));
 	drawScores(state, day, round, quiz, round.answers);
 	dom["question-carousel"].hidden = false;
+	resizeViewport();
 	if (restoreFocus) dom.questions.children[active].querySelector("h3").focus({ preventScroll: true });
 }
 
@@ -219,6 +234,7 @@ dom["question-carousel"].addEventListener("keydown", (event) => {
 });
 function resetGesture() {
 	gesture = null;
+	delete viewport.dataset.dragging;
 	dom.questions.style.removeProperty("--drag-x");
 }
 
@@ -226,7 +242,7 @@ dom.questions.addEventListener("touchstart", (event) => {
 	resetGesture();
 	if (event.touches.length !== 1) return;
 	const { identifier, clientX, clientY } = event.touches[0];
-	gesture = { identifier, clientX, clientY, intent: null };
+	gesture = { identifier, clientX, clientY, intent: null, samples: [{ x: clientX, time: event.timeStamp }] };
 }, { passive: true });
 dom.questions.addEventListener("touchmove", (event) => {
 	if (event.touches.length !== 1) {
@@ -237,19 +253,31 @@ dom.questions.addEventListener("touchmove", (event) => {
 	if (!gesture || touch.identifier !== gesture.identifier) return;
 	const dx = touch.clientX - gesture.clientX;
 	const dy = touch.clientY - gesture.clientY;
+	gesture.samples = gesture.samples.filter(({ time }) => event.timeStamp - time <= 100);
+	gesture.samples.push({ x: touch.clientX, time: event.timeStamp });
 	gesture.intent ??= swipeIntent(dx, dy);
 	if (gesture.intent === "vertical") {
 		resetGesture();
 	} else if (gesture.intent === "horizontal") {
 		event.preventDefault();
-		dom.questions.style.setProperty("--drag-x", `${Math.max(-44, Math.min(44, dx * .4))}px`);
+		const width = viewport.clientWidth;
+		if (gesture.offset === undefined) {
+			const current = new DOMMatrixReadOnly(getComputedStyle(dom.questions).transform).m41;
+			gesture.offset = current + active * width;
+			viewport.dataset.dragging = "";
+		}
+		const hasNeighbour = dx > 0 ? active > 0 : active < outcomes.length - 1;
+		const offset = Math.max(-width, Math.min(width, gesture.offset + dx * (hasNeighbour ? 1 : .25)));
+		dom.questions.style.setProperty("--drag-x", `${offset}px`);
 	}
 }, { passive: false });
 dom.questions.addEventListener("touchcancel", resetGesture, { passive: true });
 dom.questions.addEventListener("touchend", (event) => {
 	const touch = gesture && Array.from(event.changedTouches).find((point) => point.identifier === gesture.identifier);
 	if (!touch) return;
-	const direction = swipeDirection(touch.clientX - gesture.clientX, touch.clientY - gesture.clientY);
+	const sample = gesture.samples.find(({ time }) => event.timeStamp - time <= 100);
+	const velocity = sample ? (touch.clientX - sample.x) / Math.max(1, event.timeStamp - sample.time) : 0;
+	const direction = swipeDirection(touch.clientX - gesture.clientX, touch.clientY - gesture.clientY, velocity);
 	const wasDragging = gesture.intent === "horizontal";
 	resetGesture();
 	if (!wasDragging && !direction) return;

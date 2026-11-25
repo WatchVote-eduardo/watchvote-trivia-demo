@@ -67,18 +67,24 @@
 .carousel-arrow[aria-disabled="true"] { opacity: .38; cursor: default; }
 .carousel-step:focus-visible, .carousel-arrow:focus-visible { outline: 2px solid var(--wv-bronze); outline-offset: 2px; }
 .carousel :is(h2, h3)[tabindex="-1"]:focus { outline: none; }
-.carousel-slides {
-	overflow-x: clip;
+.carousel-viewport {
+	--slide-easing: 300ms cubic-bezier(.22, .61, .36, 1);
+	overflow: clip;
 	touch-action: pan-y pinch-zoom;
+	transition: height var(--slide-easing);
 }
-.carousel-slides > .v2-question:not([hidden]) {
-	animation: carousel-in 180ms ease-out;
-	transform: translateX(var(--drag-x, 0px));
+.carousel-slides {
+	--track-drag: var(--drag-x, 0px);
+	display: flex;
+	align-items: flex-start;
+	transform: translate3d(calc(-100% * var(--slide-index, 0) + var(--track-drag)), 0, 0);
+	transition: transform var(--slide-easing);
 }
-.carousel-slides[data-direction="back"] { --slide-offset: -.6rem; }
-@keyframes carousel-in {
-	from { opacity: .6; translate: var(--slide-offset, .6rem); }
+.carousel-slides > .v2-question {
+	flex: 0 0 100%;
+	min-width: 0;
 }
+.carousel-viewport[data-dragging] .carousel-slides { transition: none; }
 .carousel-summary { margin-block-start: 1rem; }
 .carousel-score { padding: clamp(1rem, 3cqi, 1.75rem); }
 .carousel-score h2 {
@@ -88,7 +94,8 @@
 }
 .carousel-score p:last-child { margin-block-end: 0; }
 @media (prefers-reduced-motion: reduce) {
-	.carousel-slides > .v2-question:not([hidden]) { animation: none; transform: none; }
+	.carousel-viewport, .carousel-slides { transition: none; }
+	.carousel-slides { --track-drag: 0px; }
 }
 @media (max-width: 46rem) {
 	.carousel .v2-summary .wv-trivia__dial { display: none; }
