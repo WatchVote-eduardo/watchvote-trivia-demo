@@ -1,0 +1,86 @@
+.carousel .wv-trivia__intro,
+.carousel .v2-summary,
+.carousel #question-carousel,
+.carousel-summary {
+	max-width: 48rem;
+	margin-inline: auto;
+}
+.carousel .wv-trivia__intro h1 {
+	font: 700 clamp(2.8rem, 6.2vw, 4.9rem)/.98 var(--wv-display);
+	margin: 0 0 .65rem;
+}
+.carousel .v2-summary .wv-trivia__round-content { padding: clamp(1rem, 3cqi, 2rem); }
+.carousel .v2-summary h2 { font-size: clamp(1.65rem, 4cqi, 2.5rem); }
+.carousel #question-carousel { margin-block-start: 1rem; scroll-margin-top: 1rem; }
+.carousel-controls {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: clamp(.15rem, 1cqi, .75rem);
+	margin-block-end: .65rem;
+}
+.carousel-steps {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: .15rem;
+}
+.carousel-step, .carousel-arrow {
+	border: 1px solid transparent;
+	border-radius: .55rem;
+	color: var(--wv-ink);
+	font: inherit;
+	cursor: pointer;
+	touch-action: manipulation;
+}
+.carousel-step {
+	display: grid;
+	justify-items: center;
+	gap: .18rem;
+	padding: .32rem 0;
+	background: transparent;
+	color: var(--wv-muted);
+	font-size: clamp(.63rem, 2.6cqi, .82rem);
+	font-weight: 600;
+	line-height: 1.25;
+}
+.carousel-step[aria-current="step"] { background: var(--wv-sand); color: var(--wv-ink); }
+.carousel-dot {
+	display: grid;
+	place-items: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 1px solid var(--wv-line);
+	border-radius: 50%;
+	background: var(--wv-paper);
+	color: var(--wv-ink);
+}
+.carousel-step[aria-current="step"] .carousel-dot { border-color: var(--wv-bronze); }
+.carousel-step[data-result="1"] .carousel-dot { background: #24471f; color: white; }
+.carousel-step[data-result="0"] .carousel-dot { background: #6e341c; color: white; }
+.carousel-arrow {
+	width: 2.5rem;
+	min-height: 2.75rem;
+	background: var(--wv-ink);
+	color: var(--wv-paper);
+	font-size: 1.2rem;
+}
+.carousel-arrow[aria-disabled="true"] { opacity: .38; cursor: default; }
+.carousel-step:focus-visible, .carousel-arrow:focus-visible { outline: 2px solid var(--wv-bronze); outline-offset: 2px; }
+.carousel-slides { touch-action: pan-y pinch-zoom; }
+.carousel-slides > .v2-question:not([hidden]) {
+	animation: carousel-in 180ms ease-out;
+}
+.carousel-slides[data-direction="back"] { --slide-offset: -.6rem; }
+@keyframes carousel-in {
+	from { opacity: .6; translate: var(--slide-offset, .6rem); }
+}
+.carousel-summary { margin-block-start: 1rem; }
+.carousel-score { padding: clamp(1rem, 3cqi, 1.75rem); }
+.carousel-score h2 { font-size: clamp(1.7rem, 4cqi, 2.5rem); }
+.carousel-score p:last-child { margin-block-end: 0; }
+@media (prefers-reduced-motion: reduce) {
+	.carousel-slides > .v2-question:not([hidden]) { animation: none; }
+}
+@media (max-width: 46rem) {
+	.carousel .v2-summary .wv-trivia__dial { display: none; }
+}
