@@ -1,0 +1,34 @@
+.four-summary .wv-trivia__dial {
+	min-height: clamp(8rem, 23cqi, 14rem);
+}
+
+.four-summary #progress {
+	margin-block: .75rem .25rem;
+	font-weight: 700;
+	color: var(--wv-ink);
+}
+
+.four-questions {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: clamp(1rem, 3cqi, 1.5rem);
+	margin-block-start: clamp(1rem, 3cqi, 1.5rem);
+}
+
+.four-question {
+	padding: clamp(1.1rem, 3cqi, 1.8rem);
+	overflow-wrap: anywhere;
+}
+
+.four-question h3 {
+	font-size: clamp(1.65rem, 3cqi, 2.15rem);
+	margin-bottom: 1rem;
+}
+
+@media (max-width: 46rem) {
+	.four-questions { grid-template-columns: minmax(0, 1fr); }
+}
+
+@container wv-trivia (max-width: 46rem) {
+	.four-questions { grid-template-columns: minmax(0, 1fr); }
+}

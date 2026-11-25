@@ -1,0 +1,89 @@
+{
+  "startDate": "2026-11-25",
+  "days": [
+    [
+      ["What does an annual calendar usually need you to correct once a year?", ["The transition from February to March", "The first day of July", "The day of the week in August", "The time at the winter solstice"], 0],
+      ["Which instrument listens to the ticks of a mechanical watch to estimate its daily rate?", ["Micrometer", "Timegrapher", "Calorimeter", "Depth gauge"], 1],
+      ["What does a pulsometer scale help measure?", ["Atmospheric pressure", "Elapsed dive time", "Heart rate", "Magnetic field strength"], 2],
+      ["In which year was Seiko’s Quartz Astron wristwatch introduced?", ["1959", "1975", "1983", "1969"], 3]
+    ],
+    [
+      ["What is the crown of a watch primarily used for?", ["Setting the time and often winding the movement", "Changing the bracelet’s length", "Holding the crystal in place", "Measuring air pressure"], 0],
+      ["What is the French name for a split-seconds chronograph?", ["Répétition", "Rattrapante", "Réserve de marche", "Remontoir"], 1],
+      ["Which metal is commonly used to make blue watch hands by heat treatment?", ["Aluminium", "Silver", "Steel", "Lead"], 2],
+      ["Which nautical problem made John Harrison’s marine timekeepers especially important?", ["Measuring water depth", "Predicting wind direction", "Finding the North Star", "Determining longitude at sea"], 3]
+    ],
+    [
+      ["What does “hacking seconds” mean when setting a watch?", ["The seconds hand stops so you can synchronize it", "The seconds hand advances in five-second jumps", "The seconds hand runs backward", "The date advances by one day"], 0],
+      ["Which part of a watch case typically protrudes to attach the strap?", ["Pallet", "Lug", "Barrel", "Pinion"], 1],
+      ["What is the usual purpose of a screw-down crown?", ["To improve the dial’s legibility", "To regulate the movement’s rate", "To help seal the case against water ingress", "To change the gear ratio"], 2],
+      ["What is a dial’s rehaut?", ["Its centre hole", "The crown’s thread", "The wheel below the date disc", "The inner flange between the dial and crystal"], 3]
+    ],
+    [
+      ["What does a flyback chronograph let you do while timing an event?", ["Reset and restart timing with one action", "Time two laps with independent minute hands", "Wind the watch through a pusher", "Read tomorrow’s date"], 0],
+      ["What does “twin barrel” normally describe?", ["Two crowns on one case", "Two mainspring barrels in the movement", "Two moving bezels", "Two quartz oscillators"], 1],
+      ["What causes a traditionally black-polished steel watch part to look almost black at some angles?", ["Black lacquer seals its surface", "A dye soaks into the steel", "Its very flat surface reflects light away from the viewer", "Tiny holes scatter incoming light"], 2],
+      ["Which watch travelled with Buzz Aldrin onto the lunar surface in 1969?", ["Breitling Navitimer", "Heuer Monaco", "Rolex Explorer", "Omega Speedmaster"], 3]
+    ],
+    [
+      ["What is the purpose of jewels in many movement bearings?", ["To reduce friction and wear at pivots", "To store electricity", "To illuminate the date disc", "To increase the watch’s water resistance"], 0],
+      ["What does a retrograde hand do at the end of its scale?", ["Begins a full circle in reverse", "Jumps back to the start", "Stops until the wearer resets it", "Disconnects from the movement permanently"], 1],
+      ["What form do traditional “Geneva stripes” take?", ["Tiny overlapping circles", "Random hammered dimples", "Parallel decorative bands", "Raised Arabic numerals"], 2],
+      ["Which component usually covers the case opening on the wrist side?", ["Bezel", "Chapter ring", "Dial", "Caseback"], 3]
+    ],
+    [
+      ["A watch movement rated at 28,800 vibrations per hour oscillates at what frequency?", ["4 Hz", "1 Hz", "8 Hz", "10 Hz"], 0],
+      ["What does a watch’s “beat error” describe?", ["How bright its luminous material is", "The timing asymmetry between its tick and tock", "The difference between the indicated and actual date", "Its total daily gain in every position"], 1],
+      ["Where is a movement’s balance spring normally attached at its inner end?", ["The winding stem", "The crown wheel", "The balance staff, via a collet or equivalent mount", "The mainspring barrel"], 2],
+      ["Which surface finish is called perlage?", ["Mirror-polished bevels", "Straight brushed lines", "Alternating polished and frosted stripes", "Overlapping circular graining"], 3]
+    ],
+    [
+      ["Why were radium-painted watch dials hazardous?", ["Radium is radioactive", "The paint releases compressed air", "Steel hands melt at body temperature", "The paint creates a powerful magnetic field"], 0],
+      ["How does non-radioactive photoluminescent lume normally become visible in darkness?", ["By generating heat while worn", "By absorbing light and releasing it gradually", "By breaking tiny gas capsules", "By using the movement’s winding energy"], 1],
+      ["Which scale is traditionally used to judge the distance to a lightning strike using the delay before thunder?", ["Pulsometer", "Tide scale", "Telemeter", "Tachymeter"], 2],
+      ["What is the usual purpose of a cyclops lens on a watch crystal?", ["To block UV light", "To allow the crown to turn", "To brighten the hands", "To magnify the date"], 3]
+    ],
+    [
+      ["What does a guilloché dial traditionally feature?", ["A repeating engraved pattern", "A plain unpolished casting", "A layer of magnetic paint", "A printed calendar on the back"], 0],
+      ["What does a sector dial typically use to organize the display?", ["Only a floating digital window", "Concentric tracks and radiating divisions", "An engraved picture with no scale", "A spiral mainspring printed in full size"], 1],
+      ["What does “grand feu” describe in watch dial making?", ["A brass plating method", "Inkjet printing under vacuum", "Enamelling fired at high temperature", "Mechanical polishing with ice"], 2],
+      ["Which material typically forms the transparent inset in an exhibition caseback?", ["Brass", "Rubber", "Leather", "A crystal such as sapphire"], 3]
+    ],
+    [
+      ["In a jump-hour watch, how is the hour typically shown?", ["By a numeral that changes abruptly", "By a hand that always moves backward", "By four overlapping seconds hands", "By repeating sound only"], 0],
+      ["What does a world-time watch usually show at a glance?", ["The next leap year", "Time in multiple cities or zones", "The depth below sea level", "The total winding torque"], 1],
+      ["Which watch display marks a high tide or low tide cycle?", ["Regulator", "Monopusher", "Tide indicator", "Up/down power reserve"], 2],
+      ["What distinguishes a GMT bezel from a typical dive bezel?", ["It can only be mounted on quartz models", "It has no numerals at all", "It displays a scale in degree minutes", "It normally uses a 24-hour scale rather than 60 minutes"], 3]
+    ],
+    [
+      ["What is a small seconds display?", ["A seconds hand on a separate subdial", "A hand that stops every other minute", "A scale for fractions of an hour", "A second hand for a different time zone"], 0],
+      ["Where is a movement’s winding stem normally located?", ["Inside the crystal gasket", "Between the crown and the movement", "Under the minute hand", "Around the rim of the bezel"], 1],
+      ["What is a deployant clasp?", ["A way to attach a crystal", "A winding tool", "A folding clasp for a strap or bracelet", "A hand-setting wheel"], 2],
+      ["What do watch strap spring bars connect?", ["The dial to the movement", "The crown to the stem", "The crystal to the bezel", "The strap or bracelet to the case lugs"], 3]
+    ],
+    [
+      ["What is a tourbillon designed to rotate?", ["The balance and escapement assembly in a cage", "The outer case and lugs", "The hour wheel and crown together", "The entire strap"], 0],
+      ["Which watchmaker devised the co-axial escapement later industrialized by Omega?", ["Abraham-Louis Breguet", "George Daniels", "John Arnold", "Ferdinand Berthoud"], 1],
+      ["Which wheel carries the teeth that engage the pallets in a lever escapement?", ["Crown wheel", "Ratchet wheel", "Escape wheel", "Date wheel"], 2],
+      ["What is the purpose of an Incabloc-type shock protection system?", ["To shield the dial from glare", "To seal the crown against moisture", "To make the bezel turn in both directions", "To protect delicate pivots against impacts"], 3]
+    ],
+    [
+      ["What is a fusée used to help even out?", ["The torque transmitted by the mainspring", "The time displayed in two zones", "The temperature inside the case", "The weight of the watch on the wrist"], 0],
+      ["What does a magnetized steel balance spring often cause a watch to do?", ["Stop displaying the date only", "Run fast as spring coils interfere with one another", "Go completely silent at noon", "Increase water resistance"], 1],
+      ["Which commonly used watchmaking term describes polished bevels along the edges of bridges?", ["Perlage", "Brushing", "Anglage", "Bluing"], 2],
+      ["What is a movement’s calibre?", ["The strap size at the lugs", "A rating for maximum dive depth", "Its crystal’s diameter", "Its movement type or model designation"], 3]
+    ],
+    [
+      ["What distinguishes a mechanical alarm watch from a minute repeater?", ["The alarm sounds at a preset time rather than announcing the time on demand", "The alarm needs a quartz crystal by definition", "The alarm can only sound at noon", "The alarm cannot make a sound"], 0],
+      ["What does a monopusher chronograph use to control its timing functions?", ["A folding clasp", "One push-button", "Separate rotating bezels", "Three crowns"], 1],
+      ["What does a chronometer certificate typically concern?", ["The cost of servicing a movement", "The country where a bracelet was made", "Accuracy under specified test conditions", "The thickness of the caseback"], 2],
+      ["Which institution awards the best-in-show Aiguille d’Or prize in watchmaking?", ["The International Olympic Committee", "The Royal Observatory Greenwich", "The Swiss Federal Institute of Metrology", "The Grand Prix d’Horlogerie de Genève"], 3]
+    ],
+    [
+      ["Why do some dive watches have a helium escape valve?", ["To vent helium during decompression after saturation diving", "To pump helium into the bracelet", "To increase dial brightness in daylight", "To measure the gas in a diver’s tank"], 0],
+      ["What does a Blancpain Fifty Fathoms’ name refer to?", ["The movement’s jewel count", "A depth measurement in fathoms", "The number of crown turns required to wind it", "A timing scale for fifty minutes"], 1],
+      ["Which material is often used for a bezel insert because of its high scratch resistance?", ["Untreated leather", "Plywood", "Ceramic", "Pure tin"], 2],
+      ["Which watch was designed with a case that could be flipped to protect its face during polo?", ["Omega Constellation", "IWC Portugieser", "Breitling Chronomat", "Jaeger-LeCoultre Reverso"], 3]
+    ]
+  ]
+}
