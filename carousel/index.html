@@ -5,10 +5,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="noindex, nofollow">
 	<title>WatchVote Daily Trivia · Carousel</title>
-	<link rel="stylesheet" href="../trivia.css">
-	<link rel="stylesheet" href="../v2/v2.css">
-	<link rel="stylesheet" href="./carousel.css">
-	<script type="module" src="./app.mjs"></script>
+	<link rel="stylesheet" href="../trivia.css?v=desktop-full-width-2">
+	<link rel="stylesheet" href="../v2/v2.css?v=desktop-full-width-2">
+	<link rel="stylesheet" href="./carousel.css?v=desktop-full-width-2">
+	<script type="importmap">
+		{
+			"imports": {
+				"../v2/model.mjs": "../v2/model.mjs?v=desktop-full-width-2",
+				"../v2/share.mjs": "../v2/share.mjs?v=desktop-full-width-2",
+				"../v2/view.mjs": "../v2/view.mjs?v=desktop-full-width-2",
+				"./navigation.mjs": "./navigation.mjs?v=desktop-full-width-2"
+			}
+		}
+	</script>
+	<script type="module" src="./app.mjs?v=desktop-full-width-2"></script>
 </head>
 <body>
 	<main class="wv-trivia v2 carousel" aria-label="WatchVote Daily Trivia">
@@ -56,8 +66,10 @@
 					<div id="steps" class="carousel-steps"></div>
 					<button type="button" id="next" class="carousel-arrow" aria-label="Next slide">→</button>
 				</nav>
-				<div id="question-viewport" class="carousel-viewport">
-					<div id="questions" class="carousel-slides"></div>
+				<div class="carousel-frame">
+					<div id="question-viewport" class="carousel-viewport">
+						<div id="questions" class="carousel-slides"></div>
+					</div>
 				</div>
 			</section>
 			<div id="summary-home">

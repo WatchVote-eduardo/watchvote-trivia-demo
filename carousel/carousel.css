@@ -95,6 +95,7 @@
 	block-size: 1px;
 }
 @media (min-width: 640px) {
+	.carousel-frame { overflow: hidden; overflow: clip; }
 	.carousel-slides > section { flex-basis: 100%; }
 	.carousel-slides::before, .carousel-slides::after { content: none; }
 }
