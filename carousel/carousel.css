@@ -94,6 +94,10 @@
 	flex: 0 0 calc(6.5% - var(--slide-gap));
 	block-size: 1px;
 }
+@media (min-width: 640px) {
+	.carousel-slides > section { flex-basis: 100%; }
+	.carousel-slides::before, .carousel-slides::after { content: none; }
+}
 .carousel-summary { margin-block-start: 1rem; }
 .carousel-slides > .carousel-summary { margin: 0; }
 .carousel-score { padding: clamp(1rem, 3cqi, 1.75rem); }
